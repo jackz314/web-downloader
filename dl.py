@@ -11,6 +11,7 @@ import argparse
 #     print("Please provide a link")
 #     sys.exit(0)
 
+# argument parsing part
 parser = argparse.ArgumentParser(description='Tool for batch downloading files from links on a given web page')
 optionalArgs = parser._action_groups.pop() 
 optionalArgs.title = 'Optional Arguments'
@@ -42,12 +43,12 @@ for linkObj in soup.findAll('a'):
     # is string and matches file type link
     if isinstance(link, str) and fileRegex.match(link) != None: 
         if urlRegex.match(link) == None:
-            link = url+link # some links I worked with have accidental root links (instead of local relative ones), that's when this line is helpful instead of the following
-            # if link[0] != '/': #put together absolut directories
-            #     link = url+link
-            # else:
-            #     parsedUrl = urlparse(url)
-            #     link = parsedUrl.scheme + '://' + parsedUrl.netloc + link # root directory
+            # link = url+link # some links I worked with have accidental root links (instead of local relative ones), that's when this line is helpful instead of the following
+            if link[0] != '/': #put together absolut directories
+                link = url+link
+            else:
+                parsedUrl = urlparse(url)
+                link = parsedUrl.scheme + '://' + parsedUrl.netloc + link # root directory
         links.append(link)
         if args.list:
             print(link)
