@@ -7,10 +7,6 @@ import shutil # get console width
 import time # time operation
 import argparse
 
-# if len(sys.argv) < 2:
-#     print("Please provide a link")
-#     sys.exit(0)
-
 # argument parsing part
 parser = argparse.ArgumentParser(description='Tool for batch downloading files from links on a given web page')
 optionalArgs = parser._action_groups.pop() 
