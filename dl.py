@@ -30,7 +30,7 @@ if response.getcode() != 200:
 url = response.geturl()
 page = response.read()
 soup = bs(page,"html.parser")
-links=[]
+links=set() # avoid duplicates
 fileTypes = args.types
 fileRegex = re.compile('^.*\.('+ fileTypes + ')$', re.IGNORECASE) # match all file types included
 urlRegex = re.compile('^.+:\/\/.+$') # match [ANYTHING]://[ANYTHING]
@@ -45,12 +45,12 @@ for linkObj in soup.findAll('a'):
             else:
                 parsedUrl = urlparse(url)
                 link = parsedUrl.scheme + '://' + parsedUrl.netloc + link # root directory
-        links.append(link)
+        links.add(link)
         if args.list:
             print(link)
 try:
     saveDir = args.dir
-    if saveDir[-1] != '/':
+    if saveDir[-1] != '/': # complete directory
         saveDir += '/'
     consoleWidth = shutil.get_terminal_size((80, 20)).columns
     for i, link in enumerate(links):
