@@ -1,5 +1,6 @@
 from urllib import request
 import sys
+import os
 from bs4 import BeautifulSoup as bs # parse webpage to get links
 import re # regex for filtering links
 from urllib.parse import urlparse
@@ -52,6 +53,8 @@ try:
     saveDir = args.dir
     if saveDir[-1] != '/': # complete directory
         saveDir += '/'
+    if not os.path.isdir(saveDir): # if save directory doesn't exist
+        os.mkdir(saveDir) # create one
     consoleWidth = shutil.get_terminal_size((80, 20)).columns
     for i, link in enumerate(links):
         i+=1
@@ -66,7 +69,7 @@ try:
         else:
             combined = prompt + progress[len(prompt):]
         print(combined, end='\r', flush=True)
-        request.urlretrieve(link, saveDir+fileName)
+        request.urlretrieve(link, saveDir+fileName) # download
 
     endT = time.time_ns()
     finishText = 'All Done! Downloaded %d files. Took %.2fs.' % (len(links), (endT-startT)*1e-9) 
